@@ -1,47 +1,35 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
 import FormulaireAjout from './FormulaireAjout'
 import ListeTaches from './ListeTaches'
 import SelectionProfil from './SelectionProfil'
+import { supabase } from './supabase'
 import './App.css'
 
-const TACHES_EXEMPLE = [
-  {
-    id: '1',
-    titre: 'Finir mon app',
-    categorie: 'Apprentissage',
-    priorite: 'haute',
-    dateEcheance: '2026-09-30',
-    complete: false,
-    creeLe: Date.now()
-  }
-]
+const PROFILS = { fiona: 'Fiona', greg: 'Greg', maison: 'Maison' }
 
 function App() {
   const [profilActif, setProfilActif] = useState(() => {
     return localStorage.getItem('agenda-profil-actif') || null
   })
-
-  const [taches, setTaches] = useState(() => {
-    const profil = localStorage.getItem('agenda-profil-actif')
-    if (!profil) return []
-    try {
-      const sauvegardees = localStorage.getItem(`agenda-taches-${profil}`)
-      return sauvegardees ? JSON.parse(sauvegardees) : TACHES_EXEMPLE
-    } catch {
-      return TACHES_EXEMPLE
-    }
-  })
+  const [taches, setTaches] = useState([])
+  const [chargement, setChargement] = useState(false)
 
   useEffect(() => {
-    if (profilActif) {
-      localStorage.setItem('agenda-profil-actif', profilActif)
-      localStorage.setItem(`agenda-taches-${profilActif}`, JSON.stringify(taches))
+    if (!profilActif) return
+    const chargerTaches = async () => {
+      setChargement(true)
+      const { data, error } = await supabase
+        .from('taches')
+        .select('*')
+        .eq('profil', profilActif)
+      if (!error) setTaches(data || [])
+      setChargement(false)
     }
-  }, [taches, profilActif])
+    chargerTaches()
+  }, [profilActif])
 
   const choisirProfil = (id) => {
-    const sauvegardees = localStorage.getItem(`agenda-taches-${id}`)
-    setTaches(sauvegardees ? JSON.parse(sauvegardees) : TACHES_EXEMPLE)
+    localStorage.setItem('agenda-profil-actif', id)
     setProfilActif(id)
   }
 
@@ -51,23 +39,30 @@ function App() {
     setTaches([])
   }
 
-  const nomProfil = { fiona: 'Fiona', greg: 'Greg', maison: 'Maison' }
-
-  const ajouterTache = (donnee) => {
-    setTaches(prev => [{
+  const ajouterTache = async (donnee) => {
+    const nouvelleTache = {
       ...donnee,
       id: crypto.randomUUID(),
+      profil: profilActif,
       complete: false,
       creeLe: Date.now()
-    }, ...prev])
+    }
+    const { error } = await supabase.from('taches').insert(nouvelleTache)
+    if (!error) setTaches(prev => [nouvelleTache, ...prev])
   }
 
-  const supprimerTache = (id) => {
-    setTaches(prev => prev.filter(t => t.id !== id))
+  const supprimerTache = async (id) => {
+    const { error } = await supabase.from('taches').delete().eq('id', id)
+    if (!error) setTaches(prev => prev.filter(t => t.id !== id))
   }
 
-  const toggleComplete = (id) => {
-    setTaches(prev =>
+  const toggleComplete = async (id) => {
+    const tache = taches.find(t => t.id === id)
+    const { error } = await supabase
+      .from('taches')
+      .update({ complete: !tache.complete })
+      .eq('id', id)
+    if (!error) setTaches(prev =>
       prev.map(t => t.id === id ? { ...t, complete: !t.complete } : t)
     )
   }
@@ -78,25 +73,32 @@ function App() {
 
   return (
     <div className="app">
-      <header className='app-header'>
-        <h1 className='app-titre'>Mon Agenda</h1>
+      <header className="app-header">
+        <h1 className="app-titre">Mon Agenda</h1>
         <div className="app-header-droite">
-          <span className='app-compteur'>
+          <span className="app-compteur">
             {taches.filter(t => !t.complete).length} à faire
           </span>
           <button className="btn-changer-profil" onClick={changerProfil}>
-            {nomProfil[profilActif]} ↩
+            {PROFILS[profilActif]} ↩
           </button>
         </div>
       </header>
 
-      <FormulaireAjout onAjouter={ajouterTache} />
-
-      <ListeTaches
-        taches={taches}
-        onToggle={toggleComplete}
-        onSupprimer={supprimerTache}
-      />
+      {chargement ? (
+        <p style={{ textAlign: 'center', color: '#8A8A80', padding: '40px 0' }}>
+          Chargement...
+        </p>
+      ) : (
+        <>
+          <FormulaireAjout onAjouter={ajouterTache} />
+          <ListeTaches
+            taches={taches}
+            onToggle={toggleComplete}
+            onSupprimer={supprimerTache}
+          />
+        </>
+      )}
     </div>
   )
 }
