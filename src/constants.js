@@ -1,5 +1,6 @@
 export const CATEGORIES = [
     "Travail",
+    "Télétravail",
     "Personnel",
     "Apprentissage",
     "Courses",

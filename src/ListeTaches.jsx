@@ -20,8 +20,16 @@ function ListeTaches({ taches, onToggle, onSupprimer }) {
             return true
         })
         .sort((a, b) => {
+            // Complètes toujours en bas
             if (a.complete !== b.complete) return a.complete ? 1 : -1
-            return ORDRE_PRIORITE[a.priorite] - ORDRE_PRIORITE[b.priorite]
+            // Sans date en premier
+            const aDate = a.dateEcheance || ''
+            const bDate = b.dateEcheance || ''
+            if (!aDate && bDate) return -1
+            if (aDate && !bDate) return 1
+            // Ensuite par date croissante (plus ancienne d'abord)
+            if (aDate && bDate) return aDate.localeCompare(bDate)
+            return 0
         })
 
     return (

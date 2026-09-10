@@ -7,6 +7,7 @@ function Tache({ tache, onToggle, onSupprimer }) {
 
     const formatDate = (str) =>
       new Date(str).toLocaleDateString('fr-FR', {
+        weekday: 'long',
         day: 'numeric',
         month: 'short'
       })
