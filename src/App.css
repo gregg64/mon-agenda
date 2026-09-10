@@ -76,6 +76,7 @@ body {
   color: #18180F;
   -webkit-text-fill-color: #18180F;
   text-align: center;
+  text-align-last: center;
   min-width: 110px;
   color-scheme: light;
 }
@@ -84,7 +85,7 @@ body {
 .formulaire__options input[type="date"]::-webkit-datetime-edit-day-field,
 .formulaire__options input[type="date"]::-webkit-datetime-edit-month-field,
 .formulaire__options input[type="date"]::-webkit-datetime-edit-year-field,
-.formulaire__options input[type="date"]::-webkit-datetime-edit-text { color: #18180F; -webkit-text-fill-color: #18180F; }
+.formulaire__options input[type="date"]::-webkit-datetime-edit-text { color: #18180F !important; -webkit-text-fill-color: #18180F !important; }
 .formulaire__options select:focus,
 .formulaire__options input[type="date"]:focus { border-color: #3D52D9; }
 
@@ -145,14 +146,35 @@ body {
   color: #18180F;
   -webkit-text-fill-color: #18180F;
   text-align: center;
+  text-align-last: center;
   color-scheme: light;
+  width: 100%;
+  box-sizing: border-box;
 }
 .filtre-barre input[type="date"]::-webkit-datetime-edit,
 .filtre-barre input[type="date"]::-webkit-datetime-edit-fields-wrapper,
 .filtre-barre input[type="date"]::-webkit-datetime-edit-day-field,
 .filtre-barre input[type="date"]::-webkit-datetime-edit-month-field,
 .filtre-barre input[type="date"]::-webkit-datetime-edit-year-field,
-.filtre-barre input[type="date"]::-webkit-datetime-edit-text { color: #18180F; -webkit-text-fill-color: #18180F; }
+.filtre-barre input[type="date"]::-webkit-datetime-edit-text { color: #18180F !important; -webkit-text-fill-color: #18180F !important; }
+
+/* ─ GLOBAL DATE FIX iOS/Chrome ──────── */
+input[type="date"]::-webkit-datetime-edit,
+input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-year-field,
+input[type="date"]::-webkit-datetime-edit-text {
+  color: #18180F !important;
+  -webkit-text-fill-color: #18180F !important;
+  opacity: 1 !important;
+}
+input[type="date"] {
+  color: #18180F !important;
+  -webkit-text-fill-color: #18180F !important;
+  color-scheme: light;
+  opacity: 1 !important;
+}
 .filtre-barre input[type="date"]::-webkit-calendar-picker-indicator {
   filter: brightness(0);
   cursor: pointer;

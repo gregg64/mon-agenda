@@ -1,5 +1,6 @@
-const DATE_STYLE = { color: '#18180F', WebkitTextFillColor: '#18180F', colorScheme: 'light' }
-const SELECT_STYLE = { width: '140px', minWidth: '140px', maxWidth: '140px' }
+const WRAP = { width: '130px', minWidth: '130px', maxWidth: '130px', flexShrink: 0, overflow: 'hidden' }
+const SEL = { width: '100%', boxSizing: 'border-box', textAlignLast: 'center' }
+const DATE_SEL = { width: '100%', boxSizing: 'border-box', color: '#18180F', WebkitTextFillColor: '#18180F', colorScheme: 'light', textAlignLast: 'center' }
 
 function FiltreBarre({
     categories, priorites, filtreDate, onDate,
@@ -21,37 +22,43 @@ function FiltreBarre({
             <div className="filtre-ligne filtre-ligne--filtres">
                 <div className="filtre-groupe">
                     <label className="filtre-label">Catégorie</label>
-                    <select value={filtreCategorie} onChange={e => onCategorie(e.target.value)} style={SELECT_STYLE}>
-                        {categories.map(c => (
-                            <option key={c} value={c}>{c}</option>
-                        ))}
-                    </select>
+                    <div style={WRAP}>
+                        <select value={filtreCategorie} onChange={e => onCategorie(e.target.value)} style={SEL}>
+                            {categories.map(c => (
+                                <option key={c} value={c}>{c}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
 
                 <div className="filtre-groupe">
                     <label className="filtre-label">Priorité</label>
-                    <select value={filtrePriorite} onChange={e => onPriorite(e.target.value)} style={SELECT_STYLE}>
-                        {priorites.map(p => (
-                            <option key={p} value={p}>{p}</option>
-                        ))}
-                    </select>
+                    <div style={WRAP}>
+                        <select value={filtrePriorite} onChange={e => onPriorite(e.target.value)} style={SEL}>
+                            {priorites.map(p => (
+                                <option key={p} value={p}>{p}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
 
                 <div className="filtre-groupe">
                     <label className="filtre-label">Date</label>
-                    <input
-                        type="date"
-                        value={filtreDate}
-                        onChange={e => onDate(e.target.value)}
-                        style={{ ...SELECT_STYLE, ...DATE_STYLE }}
-                    />
+                    <div style={WRAP}>
+                        <input
+                            type="date"
+                            value={filtreDate}
+                            onChange={e => onDate(e.target.value)}
+                            style={DATE_SEL}
+                        />
+                    </div>
                     {filtreDate && (
                         <button className="filtre-reset" onClick={() => onDate('')}>✕</button>
                     )}
                 </div>
             </div>
 
-            {/* Ligne 2 : toggle en bas à droite */}
+            {/* Ligne 3 : toggle */}
             <div className="filtre-ligne filtre-ligne--meta">
                 <button
                     className={`filtre-btn-toggle ${masquerCompletes ? 'actif' : ''}`}
