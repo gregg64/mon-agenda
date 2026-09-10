@@ -45,6 +45,7 @@ function FormulaireAjout({ onAjouter }) {
                     type="date"
                     value={champs.dateEcheance}
                     onChange={set('dateEcheance')}
+                    style={{ color: '#18180F', WebkitTextFillColor: '#18180F', colorScheme: 'light' }}
                 />
 
                 <button type="submit" className="btn-ajouter">
