@@ -1,3 +1,6 @@
+const DATE_STYLE = { color: '#18180F', WebkitTextFillColor: '#18180F', colorScheme: 'light' }
+const SELECT_STYLE = { width: '140px', minWidth: '140px', maxWidth: '140px' }
+
 function FiltreBarre({
     categories, priorites, filtreDate, onDate,
     filtreCategorie, filtrePriorite, masquerCompletes,
@@ -18,7 +21,7 @@ function FiltreBarre({
             <div className="filtre-ligne filtre-ligne--filtres">
                 <div className="filtre-groupe">
                     <label className="filtre-label">Catégorie</label>
-                    <select value={filtreCategorie} onChange={e => onCategorie(e.target.value)}>
+                    <select value={filtreCategorie} onChange={e => onCategorie(e.target.value)} style={SELECT_STYLE}>
                         {categories.map(c => (
                             <option key={c} value={c}>{c}</option>
                         ))}
@@ -27,7 +30,7 @@ function FiltreBarre({
 
                 <div className="filtre-groupe">
                     <label className="filtre-label">Priorité</label>
-                    <select value={filtrePriorite} onChange={e => onPriorite(e.target.value)}>
+                    <select value={filtrePriorite} onChange={e => onPriorite(e.target.value)} style={SELECT_STYLE}>
                         {priorites.map(p => (
                             <option key={p} value={p}>{p}</option>
                         ))}
@@ -40,6 +43,7 @@ function FiltreBarre({
                         type="date"
                         value={filtreDate}
                         onChange={e => onDate(e.target.value)}
+                        style={{ ...SELECT_STYLE, ...DATE_STYLE }}
                     />
                     {filtreDate && (
                         <button className="filtre-reset" onClick={() => onDate('')}>✕</button>
