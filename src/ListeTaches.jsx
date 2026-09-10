@@ -5,7 +5,7 @@ import { CATEGORIES, PRIORITES } from "./constants";
 
 const ORDRE_PRIORITE = { haute: 0, normale: 1, basse: 2 }
 
-function ListeTaches({ taches, onToggle, onSupprimer }) {
+function ListeTaches({ taches, onToggle, onSupprimer, onModifier }) {
     const [filtreCategorie, setFiltreCategorie] = useState('Toutes')
     const [filtrePriorite, setFiltrePriorite] = useState('Toutes')
     const [masquerCompletes, setMasquerCompletes] = useState(false)
@@ -60,6 +60,7 @@ function ListeTaches({ taches, onToggle, onSupprimer }) {
                             tache={tache}
                             onToggle={onToggle}
                             onSupprimer={onSupprimer}
+                            onModifier={onModifier}
                         />
                     ))}
                 </div>

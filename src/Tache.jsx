@@ -1,5 +1,13 @@
-function Tache({ tache, onToggle, onSupprimer }) {
+import { useState } from 'react'
+import { CATEGORIES, PRIORITES } from './constants'
+
+function Tache({ tache, onToggle, onSupprimer, onModifier }) {
     const { id, titre, categorie, priorite, dateEcheance, complete } = tache
+    const [enEdition, setEnEdition] = useState(false)
+    const [champs, setChamps] = useState({
+        titre, categorie, priorite,
+        dateEcheance: dateEcheance || ''
+    })
 
     const estEnRetard = !complete
       && dateEcheance
@@ -11,6 +19,55 @@ function Tache({ tache, onToggle, onSupprimer }) {
         day: 'numeric',
         month: 'short'
       })
+
+    const set = (champ) => (e) => setChamps(prev => ({ ...prev, [champ]: e.target.value }))
+
+    const sauvegarder = () => {
+        if (!champs.titre.trim()) return
+        onModifier(id, champs)
+        setEnEdition(false)
+    }
+
+    const annuler = () => {
+        setChamps({ titre, categorie, priorite, dateEcheance: dateEcheance || '' })
+        setEnEdition(false)
+    }
+
+    if (enEdition) {
+        return (
+            <div className={`tache tache--edition tache--${champs.priorite}`}>
+                <div className="tache__bande" />
+                <div className="tache__edition">
+                    <input
+                        className="tache__edit-titre"
+                        value={champs.titre}
+                        onChange={set('titre')}
+                        onKeyDown={e => { if (e.key === 'Enter') sauvegarder(); if (e.key === 'Escape') annuler() }}
+                        autoFocus
+                        placeholder="Titre de la tâche"
+                    />
+                    <div className="tache__edit-options">
+                        <select value={champs.categorie} onChange={set('categorie')} style={{ textAlignLast: 'center' }}>
+                            {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                        <select value={champs.priorite} onChange={set('priorite')} style={{ textAlignLast: 'center' }}>
+                            {PRIORITES.map(p => <option key={p} value={p}>{p}</option>)}
+                        </select>
+                        <input
+                            type="date"
+                            value={champs.dateEcheance}
+                            onChange={set('dateEcheance')}
+                            style={{ color: '#18180F', WebkitTextFillColor: '#18180F', colorScheme: 'light', textAlignLast: 'center' }}
+                        />
+                    </div>
+                    <div className="tache__edit-actions">
+                        <button className="btn-sauvegarder" onClick={sauvegarder}>✓ Enregistrer</button>
+                        <button className="btn-annuler" onClick={annuler}>Annuler</button>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
     return (
       <div className={[
@@ -53,6 +110,14 @@ function Tache({ tache, onToggle, onSupprimer }) {
             )}
           </div>
         </div>
+
+        <button
+          className="tache__edit-btn"
+          onClick={() => setEnEdition(true)}
+          aria-label={`Modifier "${titre}"`}
+        >
+          ✏
+        </button>
 
         <button
           className="tache__suppr"

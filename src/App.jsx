@@ -14,6 +14,16 @@ function App() {
   })
   const [taches, setTaches] = useState([])
   const [chargement, setChargement] = useState(false)
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = localStorage.getItem('agenda-dark-mode') === 'true'
+    if (saved) document.documentElement.classList.add('dark')
+    return saved
+  })
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', darkMode)
+    localStorage.setItem('agenda-dark-mode', darkMode)
+  }, [darkMode])
 
   useEffect(() => {
     if (!profilActif) return
@@ -63,6 +73,16 @@ function App() {
     }
   }
 
+  const modifierTache = async (id, champs) => {
+    const { error } = await supabase
+      .from('taches')
+      .update(champs)
+      .eq('id', id)
+    if (!error) setTaches(prev =>
+      prev.map(t => t.id === id ? { ...t, ...champs } : t)
+    )
+  }
+
   const supprimerTache = async (id) => {
     const { error } = await supabase.from('taches').delete().eq('id', id)
     if (!error) setTaches(prev => prev.filter(t => t.id !== id))
@@ -91,6 +111,14 @@ function App() {
           <span className="app-compteur">
             {taches.filter(t => !t.complete).length} à faire
           </span>
+          <button
+            className="btn-dark-mode"
+            onClick={() => setDarkMode(d => !d)}
+            title={darkMode ? 'Mode clair' : 'Mode sombre'}
+            aria-label={darkMode ? 'Activer le mode clair' : 'Activer le mode sombre'}
+          >
+            {darkMode ? '☀️' : '🌙'}
+          </button>
           <button className="btn-changer-profil" onClick={changerProfil}>
             {PROFILS[profilActif]} ↩
           </button>
@@ -109,6 +137,7 @@ function App() {
               taches={taches}
               onToggle={toggleComplete}
               onSupprimer={supprimerTache}
+              onModifier={modifierTache}
             />
           </ErrorBoundary>
         </>
