@@ -1,4 +1,4 @@
-const WRAP = { width: '130px', minWidth: '130px', maxWidth: '130px', flexShrink: 0, overflow: 'hidden' }
+const WRAP = { flex: 1 }
 const SEL = { width: '100%', boxSizing: 'border-box', textAlignLast: 'center' }
 const DATE_SEL = { width: '100%', boxSizing: 'border-box', color: '#18180F', WebkitTextFillColor: '#18180F', colorScheme: 'light', textAlignLast: 'center' }
 

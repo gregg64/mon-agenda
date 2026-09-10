@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import FormulaireAjout from './FormulaireAjout'
 import ListeTaches from './ListeTaches'
 import SelectionProfil from './SelectionProfil'
+import ErrorBoundary from './ErrorBoundary'
 import { supabase } from './supabase'
 import './App.css'
 
@@ -26,6 +27,12 @@ function App() {
       setChargement(false)
     }
     chargerTaches()
+
+    const handleVisibilite = () => {
+      if (document.visibilityState === 'visible') chargerTaches()
+    }
+    document.addEventListener('visibilitychange', handleVisibilite)
+    return () => document.removeEventListener('visibilitychange', handleVisibilite)
   }, [profilActif])
 
   const choisirProfil = (id) => {
@@ -97,11 +104,13 @@ function App() {
       ) : (
         <>
           <FormulaireAjout onAjouter={ajouterTache} />
-          <ListeTaches
-            taches={taches}
-            onToggle={toggleComplete}
-            onSupprimer={supprimerTache}
-          />
+          <ErrorBoundary>
+            <ListeTaches
+              taches={taches}
+              onToggle={toggleComplete}
+              onSupprimer={supprimerTache}
+            />
+          </ErrorBoundary>
         </>
       )}
     </div>

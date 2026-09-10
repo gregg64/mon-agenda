@@ -134,7 +134,7 @@ body {
   gap: 8px;
 }
 .filtre-total { font-size: 13px; color: #8A8A80; }
-.filtre-groupe { display: flex; align-items: center; gap: 6px; }
+.filtre-groupe { display: flex; align-items: center; gap: 6px; width: 100%; }
 .filtre-label { font-size: 12px; color: #8A8A80; width: 70px; flex-shrink: 0; }
 .filtre-select { flex: 1; text-align: center; }
 .filtre-barre select,
@@ -282,52 +282,33 @@ input[type="date"]::-webkit-datetime-edit-text {
 }
 .tache__suppr:hover { background: #FDEAEA; color: #C43033; }
 
-
 /* ─ RESPONSIVE ──────────────────────── */
 @media (max-width: 540px) {
-
   .formulaire__options { flex-direction: column; }
   .btn-ajouter { width: 100%; margin-left: 0; }
 
-  /* Le conteneur parent */
-  .filtre-groupe {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    gap: 12px;
-  }
+  /* Filtre : empilement vertical sur mobile */
+  .filtre-ligne--filtres { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .filtre-groupe { flex-wrap: nowrap; }
+  .filtre-barre select,
+  .filtre-barre input[type="date"] { width: 140px; min-width: 140px; max-width: 140px; }
 
-  /* 1. Le label reste fixé à gauche avec une largeur définie */
-  .filtre-label {
-    width: 80px;        /* Fixe la largeur pour réaligner proprement tous les textes */
-    text-align: left;
-    flex-shrink: 0;
-  }
+  .filtre-ligne--meta { justify-content: center;padding: 4px 8px;}
+  .filtre-btn-toggle { font-size: 11px; padding: 4px 8px; }
 
-  /* 2. Le champ prend l'espace disponible et se centre */
-  .filtre-select {
-    flex: 1; 
-    width: 100% !important;           /* Occupe l'espace restant */
-    max-width: 260px;   /* Garde une taille propre */
-    margin: 0 auto;     /* Se centre dans l'espace flex libre */
-    box-sizing: border-box;
-  }
-  .filtre-ligne--meta {
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Centre le bouton horizontalement */
-    width: 100%;
-    margin-top: 10px;        /* Facultatif : ajoute un peu d'espace au-dessus */
-  }
+  /* Header */
+  .app-header-droite { flex-shrink: 1; min-width: 0; }
+  .btn-changer-profil { font-size: 11px; padding: 4px 8px; }
+  .app-compteur { font-size: 11px; }
 }
 @media (min-width: 700px) {
   .formulaire__options { flex-direction: row; justify-content: center; }
   .btn-ajouter { width: auto; margin-left: auto; }
 
-  .filtre-ligne--filtres { flex-direction: row; flex-wrap: nowrap; align-items: center; gap: 12px; }
-  .filtre-groupe { flex-wrap: nowrap; width: auto; }
+  .filtre-ligne--filtres { flex-direction: column; align-items: stretch; gap: 8px; }
+  .filtre-groupe { width: 100%; }
   .filtre-barre select,
-  .filtre-barre input[type="date"] { width: 110px; }
+  .filtre-barre input[type="date"] { width: 100%; }
 
   .filtre-ligne--meta { justify-content: flex-end; }
   .filtre-btn-toggle { font-size: 13px; padding: 5px 10px; }
