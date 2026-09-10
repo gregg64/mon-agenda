@@ -72,6 +72,7 @@ body {
   outline: none;
   color: #18180F;
   -webkit-text-fill-color: #18180F;
+  text-align: center;
 }
 .formulaire__options input[type="date"]::-webkit-datetime-edit,
 .formulaire__options input[type="date"]::-webkit-datetime-edit-fields-wrapper,
@@ -136,8 +137,9 @@ body {
   padding: 5px 8px;
   font-size: 13px;
   background: #F5F4F0;
-  color: #18180F;
-  -webkit-text-fill-color: #18180F;
+  color:black;
+  -webkit-text-fill-color: black;
+  text-align: center;
 }
 .filtre-barre input[type="date"]::-webkit-datetime-edit,
 .filtre-barre input[type="date"]::-webkit-datetime-edit-fields-wrapper,
