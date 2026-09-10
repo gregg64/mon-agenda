@@ -16,11 +16,14 @@ body {
 
 /* ─ APP ─────────────────────────────── */
 .app {
+  width: 100%;
   max-width: min(680px, 100%);
   margin: 0 auto;
   padding: 32px 16px 80px;
   overflow-x: hidden;
+  box-sizing: border-box;
 }
+.liste-section { width: 100%; }
 .app-header {
   display: flex;
   align-items: center;
@@ -73,6 +76,8 @@ body {
   color: #18180F;
   -webkit-text-fill-color: #18180F;
   text-align: center;
+  min-width: 110px;
+  color-scheme: light;
 }
 .formulaire__options input[type="date"]::-webkit-datetime-edit,
 .formulaire__options input[type="date"]::-webkit-datetime-edit-fields-wrapper,
@@ -140,6 +145,7 @@ body {
   color: #18180F;
   -webkit-text-fill-color: #18180F;
   text-align: center;
+  color-scheme: light;
 }
 .filtre-barre input[type="date"]::-webkit-datetime-edit,
 .filtre-barre input[type="date"]::-webkit-datetime-edit-fields-wrapper,
@@ -261,7 +267,7 @@ body {
   .filtre-ligne--filtres { flex-direction: column; align-items: flex-start; gap: 6px; }
   .filtre-groupe { flex-wrap: nowrap; }
   .filtre-barre select,
-  .filtre-barre input[type="date"] { max-width: 100%; width: 160px; }
+  .filtre-barre input[type="date"] { width: 140px; min-width: 140px; max-width: 140px; }
 
   .filtre-ligne--meta { justify-content: center;padding: 4px 8px;}
   .filtre-btn-toggle { font-size: 11px; padding: 4px 8px; }
