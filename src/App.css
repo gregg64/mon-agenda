@@ -71,7 +71,14 @@ body {
   cursor: pointer;
   outline: none;
   color: #18180F;
+  -webkit-text-fill-color: #18180F;
 }
+.formulaire__options input[type="date"]::-webkit-datetime-edit,
+.formulaire__options input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+.formulaire__options input[type="date"]::-webkit-datetime-edit-day-field,
+.formulaire__options input[type="date"]::-webkit-datetime-edit-month-field,
+.formulaire__options input[type="date"]::-webkit-datetime-edit-year-field,
+.formulaire__options input[type="date"]::-webkit-datetime-edit-text { color: #18180F; -webkit-text-fill-color: #18180F; }
 .formulaire__options select:focus,
 .formulaire__options input[type="date"]:focus { border-color: #3D52D9; }
 
@@ -130,7 +137,14 @@ body {
   font-size: 13px;
   background: #F5F4F0;
   color: #18180F;
+  -webkit-text-fill-color: #18180F;
 }
+.filtre-barre input[type="date"]::-webkit-datetime-edit,
+.filtre-barre input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+.filtre-barre input[type="date"]::-webkit-datetime-edit-day-field,
+.filtre-barre input[type="date"]::-webkit-datetime-edit-month-field,
+.filtre-barre input[type="date"]::-webkit-datetime-edit-year-field,
+.filtre-barre input[type="date"]::-webkit-datetime-edit-text { color: #18180F; -webkit-text-fill-color: #18180F; }
 .filtre-barre input[type="date"]::-webkit-calendar-picker-indicator {
   filter: brightness(0);
   cursor: pointer;
