@@ -116,7 +116,7 @@ function Tache({ tache, onToggle, onSupprimer, onModifier }) {
           onClick={() => setEnEdition(true)}
           aria-label={`Modifier "${titre}"`}
         >
-          ✏
+          <span>&#9998;</span>
         </button>
 
         <button
