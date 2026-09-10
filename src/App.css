@@ -291,7 +291,7 @@ input[type="date"]::-webkit-datetime-edit-text {
   .filtre-ligne--filtres { flex-direction: column; align-items: flex-start; gap: 6px; }
   .filtre-groupe { flex-wrap: nowrap; }
   .filtre-barre select,
-  .filtre-barre input[type="date"] { width: 140px; min-width: 140px; max-width: 140px; }
+  .filtre-barre input[type="date"] { width: 100%; }
 
   .filtre-ligne--meta { justify-content: center;padding: 4px 8px;}
   .filtre-btn-toggle { font-size: 11px; padding: 4px 8px; }
