@@ -293,7 +293,7 @@ input[type="date"]::-webkit-datetime-edit-text {
   .filtre-barre select,
   .filtre-barre input[type="date"] { width: 100%; }
 
-  .filtre-ligne--meta { justify-content: center;padding: 4px 8px;}
+  .filtre-ligne--meta { justify-content: right ;padding: 4px 8px;}
   .filtre-btn-toggle { font-size: 11px; padding: 4px 8px; }
 
   /* Header */
