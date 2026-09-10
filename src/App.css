@@ -415,31 +415,3 @@ input[type="date"]::-webkit-datetime-edit-text {
   border-color: #3D52D9;
   color: #3D52D9;
 }
-/* ─Texte date mobile en noir ──────────────── */
-/* Force l'annulation du style natif iOS/Safari et la couleur noire */
-input[type="date"].filtre-select,
-.filtre-barre input[type="date"] {
-  -webkit-appearance: none !important;
-  -moz-appearance: none !important;
-  appearance: none !important;
-
-  color: #000000 !important;
-  -webkit-text-fill-color: #000000 !important;
-  background-color: #f0efe9 !important; /* Force le fond si Safari met un fond sombre */
-  opacity: 1 !important;
-}
-
-/* Force l'icône du calendrier et les sous-champs en noir */
-input[type="date"].filtre-select::-webkit-calendar-picker-indicator {
-  filter: invert(0%) !important; /* Force l'icône calendrier en noir */
-  opacity: 1 !important;
-}
-
-input[type="date"].filtre-select::-webkit-datetime-edit,
-input[type="date"].filtre-select::-webkit-datetime-edit-year-field,
-input[type="date"].filtre-select::-webkit-datetime-edit-month-field,
-input[type="date"].filtre-select::-webkit-datetime-edit-day-field,
-input[type="date"].filtre-select::-webkit-datetime-edit-text {
-  color: #000000 !important;
-  -webkit-text-fill-color: #000000 !important;
-}
