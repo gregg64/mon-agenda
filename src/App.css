@@ -137,8 +137,8 @@ body {
   padding: 5px 8px;
   font-size: 13px;
   background: #F5F4F0;
-  color:black;
-  -webkit-text-fill-color: black;
+  color: #18180F;
+  -webkit-text-fill-color: #18180F;
   text-align: center;
 }
 .filtre-barre input[type="date"]::-webkit-datetime-edit,
