@@ -319,25 +319,6 @@ input[type="date"]::-webkit-datetime-edit-text {
     width: 100%;
     margin-top: 10px;        /* Facultatif : ajoute un peu d'espace au-dessus */
   }
-    /* Rend le conteneur relatif pour positionner le bouton à l'intérieur */
-  .filtre-groupe {
-    position: relative;
-  }
-
-  /* Positionne le bouton ✕ à l'intérieur du champ date */
-  .filtre-reset {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 2px 6px;
-  }
-  .filtre-barre input[type="date"] {
-    padding-right: 28px;
-  }
 }
 @media (min-width: 700px) {
   .formulaire__options { flex-direction: row; justify-content: center; }
@@ -433,4 +414,32 @@ input[type="date"]::-webkit-datetime-edit-text {
   background: #EEF0FC;
   border-color: #3D52D9;
   color: #3D52D9;
+}
+/* ─Texte date mobile en noir ──────────────── */
+/* Force l'annulation du style natif iOS/Safari et la couleur noire */
+input[type="date"].filtre-select,
+.filtre-barre input[type="date"] {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+  background-color: #f0efe9 !important; /* Force le fond si Safari met un fond sombre */
+  opacity: 1 !important;
+}
+
+/* Force l'icône du calendrier et les sous-champs en noir */
+input[type="date"].filtre-select::-webkit-calendar-picker-indicator {
+  filter: invert(0%) !important; /* Force l'icône calendrier en noir */
+  opacity: 1 !important;
+}
+
+input[type="date"].filtre-select::-webkit-datetime-edit,
+input[type="date"].filtre-select::-webkit-datetime-edit-year-field,
+input[type="date"].filtre-select::-webkit-datetime-edit-month-field,
+input[type="date"].filtre-select::-webkit-datetime-edit-day-field,
+input[type="date"].filtre-select::-webkit-datetime-edit-text {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
 }
