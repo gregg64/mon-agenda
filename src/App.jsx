@@ -48,7 +48,12 @@ function App() {
       creeLe: Date.now()
     }
     const { error } = await supabase.from('taches').insert(nouvelleTache)
-    if (!error) setTaches(prev => [nouvelleTache, ...prev])
+    if (error) {
+      console.error('Erreur Supabase insert:', error)
+      alert('Erreur ajout: ' + error.message)
+    } else {
+      setTaches(prev => [nouvelleTache, ...prev])
+    }
   }
 
   const supprimerTache = async (id) => {
