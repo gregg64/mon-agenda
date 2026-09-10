@@ -319,6 +319,25 @@ input[type="date"]::-webkit-datetime-edit-text {
     width: 100%;
     margin-top: 10px;        /* Facultatif : ajoute un peu d'espace au-dessus */
   }
+    /* Rend le conteneur relatif pour positionner le bouton à l'intérieur */
+  .filtre-groupe {
+    position: relative;
+  }
+
+  /* Positionne le bouton ✕ à l'intérieur du champ date */
+  .filtre-reset {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 2px 6px;
+  }
+  .filtre-barre input[type="date"] {
+    padding-right: 28px;
+  }
 }
 @media (min-width: 700px) {
   .formulaire__options { flex-direction: row; justify-content: center; }
