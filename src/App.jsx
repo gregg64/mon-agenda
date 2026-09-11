@@ -14,6 +14,7 @@ function App() {
   })
   const [taches, setTaches] = useState([])
   const [chargement, setChargement] = useState(false)
+  const [categoriesPerso, setCategoriesPerso] = useState([])
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('agenda-dark-mode') === 'true'
     if (saved) document.documentElement.classList.add('dark')
@@ -24,6 +25,14 @@ function App() {
     document.documentElement.classList.toggle('dark', darkMode)
     localStorage.setItem('agenda-dark-mode', darkMode)
   }, [darkMode])
+
+  useEffect(() => {
+    const chargerCategories = async () => {
+      const { data, error } = await supabase.from('categories_perso').select('*').order('nom')
+      if (!error) setCategoriesPerso(data || [])
+    }
+    chargerCategories()
+  }, [])
 
   useEffect(() => {
     if (!profilActif) return
@@ -71,6 +80,17 @@ function App() {
     } else {
       setTaches(prev => [nouvelleTache, ...prev])
     }
+  }
+
+  const ajouterCategorie = async (nom) => {
+    const nouvelleCategorie = { id: crypto.randomUUID(), nom }
+    const { error } = await supabase.from('categories_perso').insert(nouvelleCategorie)
+    if (!error) setCategoriesPerso(prev => [...prev, nouvelleCategorie].sort((a, b) => a.nom.localeCompare(b.nom)))
+  }
+
+  const supprimerCategorie = async (id) => {
+    const { error } = await supabase.from('categories_perso').delete().eq('id', id)
+    if (!error) setCategoriesPerso(prev => prev.filter(c => c.id !== id))
   }
 
   const modifierTache = async (id, champs) => {
@@ -131,13 +151,19 @@ function App() {
         </p>
       ) : (
         <>
-          <FormulaireAjout onAjouter={ajouterTache} />
+          <FormulaireAjout
+            onAjouter={ajouterTache}
+            categoriesPerso={categoriesPerso}
+            onAjouterCategorie={ajouterCategorie}
+            onSupprimerCategorie={supprimerCategorie}
+          />
           <ErrorBoundary>
             <ListeTaches
               taches={taches}
               onToggle={toggleComplete}
               onSupprimer={supprimerTache}
               onModifier={modifierTache}
+              categoriesPerso={categoriesPerso}
             />
           </ErrorBoundary>
         </>

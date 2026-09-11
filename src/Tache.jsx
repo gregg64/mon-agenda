@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { CATEGORIES, PRIORITES } from './constants'
 
-function Tache({ tache, onToggle, onSupprimer, onModifier }) {
+function Tache({ tache, onToggle, onSupprimer, onModifier, toutesCategories }) {
     const { id, titre, categorie, priorite, dateEcheance, complete } = tache
     const [enEdition, setEnEdition] = useState(false)
     const [champs, setChamps] = useState({
@@ -48,7 +48,7 @@ function Tache({ tache, onToggle, onSupprimer, onModifier }) {
                     />
                     <div className="tache__edit-options">
                         <select value={champs.categorie} onChange={set('categorie')} style={{ textAlignLast: 'center' }}>
-                            {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                            {(toutesCategories || CATEGORIES).map(c => <option key={c} value={c}>{c}</option>)}
                         </select>
                         <select value={champs.priorite} onChange={set('priorite')} style={{ textAlignLast: 'center' }}>
                             {PRIORITES.map(p => <option key={p} value={p}>{p}</option>)}
@@ -116,7 +116,7 @@ function Tache({ tache, onToggle, onSupprimer, onModifier }) {
           onClick={() => setEnEdition(true)}
           aria-label={`Modifier "${titre}"`}
         >
-          <span>&#9998;</span>
+          ✏
         </button>
 
         <button

@@ -5,11 +5,13 @@ import { CATEGORIES, PRIORITES } from "./constants";
 
 const ORDRE_PRIORITE = { haute: 0, normale: 1, basse: 2 }
 
-function ListeTaches({ taches, onToggle, onSupprimer, onModifier }) {
+function ListeTaches({ taches, onToggle, onSupprimer, onModifier, categoriesPerso }) {
     const [filtreCategorie, setFiltreCategorie] = useState('Toutes')
     const [filtrePriorite, setFiltrePriorite] = useState('Toutes')
     const [masquerCompletes, setMasquerCompletes] = useState(false)
     const [filtreDate, setFiltreDate] = useState ('')
+
+    const toutesCategories = [...CATEGORIES, ...(categoriesPerso || []).map(c => c.nom)]
 
     const tachesFiltrees = taches
         .filter(t => {
@@ -35,7 +37,7 @@ function ListeTaches({ taches, onToggle, onSupprimer, onModifier }) {
     return (
         <section className='liste-section'>
             <FiltreBarre
-                categories={['Toutes', ...CATEGORIES]}
+                categories={['Toutes', ...toutesCategories]}
                 priorites={['Toutes', ...PRIORITES]}
                 filtreCategorie={filtreCategorie}
                 filtrePriorite={filtrePriorite}
@@ -61,6 +63,7 @@ function ListeTaches({ taches, onToggle, onSupprimer, onModifier }) {
                             onToggle={onToggle}
                             onSupprimer={onSupprimer}
                             onModifier={onModifier}
+                            toutesCategories={toutesCategories}
                         />
                     ))}
                 </div>
