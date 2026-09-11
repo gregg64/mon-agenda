@@ -482,6 +482,7 @@ input[type="date"]::-webkit-datetime-edit-text {
 /* ─ RESPONSIVE ──────────────────────── */
 @media (max-width: 540px) {
   .formulaire__options { flex-direction: column; align-items: center; }
+  .formulaire__cat-wrap { width: 100%; }
   .btn-ajouter { width: 100%; margin-left: 0; }
 
   /* Filtre : empilement vertical sur mobile */
