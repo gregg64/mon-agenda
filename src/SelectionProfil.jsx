@@ -6,6 +6,12 @@ const PROFILS = [
         emoji: '👧🏿'
     },
     {
+        id: 'Fiona-Travail',
+        nom: 'F-Travail',
+        couleur: '#48A860',
+        emoji: '💻'
+    },
+    {
         id: 'greg',
         nom: 'Greg',
         couleur: '#3D52D9',
