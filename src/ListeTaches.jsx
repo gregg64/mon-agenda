@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Tache from "./Tache";
 import FiltreBarre from './FiltreBarre'
-import { CATEGORIES, PRIORITES } from "./constants";
+import { CATEGORIES, PRIORITES, CATEGORIES_PAR_PROFIL } from "./constants";
 
 const ORDRE_PRIORITE = { haute: 0, normale: 1, basse: 2 }
 
