@@ -1,18 +1,21 @@
 import { useState } from 'react'
 import { CATEGORIES, PRIORITES, CATEGORIES_PAR_PROFIL } from './constants'
 
-function FormulaireAjout({ onAjouter, categoriesPerso, onAjouterCategorie, onSupprimerCategorie, profilActif }) {
+function FormulaireAjout({ onAjouter, categoriesPerso, onAjouterCategorie, onSupprimerCategorie, profilActif, defaultsExclus, onExclureDefault, onRestaurerDefault }) {
+    const categoriesDefaut = CATEGORIES_PAR_PROFIL[profilActif] || CATEGORIES
+    const exclusNoms = (defaultsExclus || []).map(d => d.nom)
+    const categoriesDefautVisibles = categoriesDefaut.filter(c => !exclusNoms.includes(c))
+    const categoriesDefautCachees = categoriesDefaut.filter(c => exclusNoms.includes(c))
+    const toutesCategories = [...categoriesDefautVisibles, ...(categoriesPerso || []).map(c => c.nom)]
+
     const [champs, setChamps] = useState({
         titre: '',
-        categorie: CATEGORIES[0],
+        categorie: categoriesDefaut[0],
         priorite: 'normale',
         dateEcheance: '',
     })
     const [gererCats, setGererCats] = useState(false)
     const [nouvelleCategorie, setNouvelleCategorie] = useState('')
-
-    const categoriesDefaut = CATEGORIES_PAR_PROFIL[profilActif] || CATEGORIES
-    const toutesCategories = [...categoriesDefaut, ...(categoriesPerso || []).map(c => c.nom)]
     
     const set = (cle) => (e) =>
         setChamps(prev => ({ ...prev, [cle]: e.target.value }))
@@ -92,10 +95,15 @@ function FormulaireAjout({ onAjouter, categoriesPerso, onAjouterCategorie, onSup
                         <button type="button" className="gerer-cats__btn-add" onClick={handleAjouterCategorie}>+</button>
                     </div>
                     <ul className="gerer-cats__liste">
-                        {categoriesDefaut.map(c => (
+                        {categoriesDefautVisibles.map(c => (
                             <li key={c} className="gerer-cats__item gerer-cats__item--defaut">
                                 <span>{c}</span>
-                                <span className="gerer-cats__label-defaut">défaut</span>
+                                <button
+                                    type="button"
+                                    className="gerer-cats__suppr"
+                                    onClick={() => onExclureDefault(c)}
+                                    aria-label={`Masquer ${c}`}
+                                >✕</button>
                             </li>
                         ))}
                         {(categoriesPerso || []).map(c => (
@@ -109,6 +117,22 @@ function FormulaireAjout({ onAjouter, categoriesPerso, onAjouterCategorie, onSup
                                 >✕</button>
                             </li>
                         ))}
+                        {categoriesDefautCachees.length > 0 && (
+                            <>
+                                <li className="gerer-cats__separateur">Catégories masquées</li>
+                                {categoriesDefautCachees.map(c => (
+                                    <li key={c} className="gerer-cats__item gerer-cats__item--cache">
+                                        <span>{c}</span>
+                                        <button
+                                            type="button"
+                                            className="gerer-cats__restaurer"
+                                            onClick={() => onRestaurerDefault(c)}
+                                            aria-label={`Restaurer ${c}`}
+                                        >↩</button>
+                                    </li>
+                                ))}
+                            </>
+                        )}
                     </ul>
                 </div>
             )}

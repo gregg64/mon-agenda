@@ -6,7 +6,7 @@ import ErrorBoundary from './ErrorBoundary'
 import { supabase } from './supabase'
 import './App.css'
 
-const PROFILS = { fiona: 'Fiona', 'Fiona-Travail': 'F-Travail', greg: 'Greg', maison: 'Maison' }
+const PROFILS = { fiona: 'Fiona', 'Fiona-Travail': 'F-Travail', greg: 'Greg', maison: 'Maison', course: 'Courses' }
 
 function App() {
   const [profilActif, setProfilActif] = useState(() => {
@@ -15,6 +15,7 @@ function App() {
   const [taches, setTaches] = useState([])
   const [chargement, setChargement] = useState(false)
   const [categoriesPerso, setCategoriesPerso] = useState([])
+  const [defaultsExclus, setDefaultsExclus] = useState([])
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('agenda-dark-mode') === 'true'
     if (saved) document.documentElement.classList.add('dark')
@@ -27,12 +28,17 @@ function App() {
   }, [darkMode])
 
   useEffect(() => {
+    if (!profilActif) return
     const chargerCategories = async () => {
-      const { data, error } = await supabase.from('categories_perso').select('*').order('nom')
-      if (!error) setCategoriesPerso(data || [])
+      const [{ data: perso, error: e1 }, { data: exclus, error: e2 }] = await Promise.all([
+        supabase.from('categories_perso').select('*').eq('profil', profilActif).order('nom'),
+        supabase.from('defaults_exclus').select('*').eq('profil', profilActif)
+      ])
+      if (!e1) setCategoriesPerso(perso || [])
+      if (!e2) setDefaultsExclus(exclus || [])
     }
     chargerCategories()
-  }, [])
+  }, [profilActif])
 
   useEffect(() => {
     if (!profilActif) return
@@ -63,6 +69,8 @@ function App() {
     localStorage.removeItem('agenda-profil-actif')
     setProfilActif(null)
     setTaches([])
+    setCategoriesPerso([])
+    setDefaultsExclus([])
   }
 
   const ajouterTache = async (donnee) => {
@@ -83,9 +91,24 @@ function App() {
   }
 
   const ajouterCategorie = async (nom) => {
-    const nouvelleCategorie = { id: crypto.randomUUID(), nom }
+    const nouvelleCategorie = { id: crypto.randomUUID(), nom, profil: profilActif }
     const { error } = await supabase.from('categories_perso').insert(nouvelleCategorie)
     if (!error) setCategoriesPerso(prev => [...prev, nouvelleCategorie].sort((a, b) => a.nom.localeCompare(b.nom)))
+  }
+
+  const exclureDefault = async (nom) => {
+    const nouvelle = { id: crypto.randomUUID(), profil: profilActif, nom }
+    const { error } = await supabase.from('defaults_exclus').insert(nouvelle)
+    if (!error) setDefaultsExclus(prev => [...prev, nouvelle])
+  }
+
+  const restaurerDefault = async (nom) => {
+    const { error } = await supabase
+      .from('defaults_exclus')
+      .delete()
+      .eq('profil', profilActif)
+      .eq('nom', nom)
+    if (!error) setDefaultsExclus(prev => prev.filter(d => d.nom !== nom))
   }
 
   const supprimerCategorie = async (id) => {
@@ -156,6 +179,10 @@ function App() {
             categoriesPerso={categoriesPerso}
             onAjouterCategorie={ajouterCategorie}
             onSupprimerCategorie={supprimerCategorie}
+            profilActif={profilActif}
+            defaultsExclus={defaultsExclus}
+            onExclureDefault={exclureDefault}
+            onRestaurerDefault={restaurerDefault}
           />
           <ErrorBoundary>
             <ListeTaches
@@ -164,6 +191,7 @@ function App() {
               onSupprimer={supprimerTache}
               onModifier={modifierTache}
               categoriesPerso={categoriesPerso}
+              profilActif={profilActif}
             />
           </ErrorBoundary>
         </>
