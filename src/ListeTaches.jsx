@@ -5,13 +5,14 @@ import { CATEGORIES, PRIORITES } from "./constants";
 
 const ORDRE_PRIORITE = { haute: 0, normale: 1, basse: 2 }
 
-function ListeTaches({ taches, onToggle, onSupprimer, onModifier, categoriesPerso }) {
+function ListeTaches({ taches, onToggle, onSupprimer, onModifier, categoriesPerso , profilActif }) {
     const [filtreCategorie, setFiltreCategorie] = useState('Toutes')
     const [filtrePriorite, setFiltrePriorite] = useState('Toutes')
     const [masquerCompletes, setMasquerCompletes] = useState(false)
     const [filtreDate, setFiltreDate] = useState ('')
 
-    const toutesCategories = [...CATEGORIES, ...(categoriesPerso || []).map(c => c.nom)]
+    const categoriesDefaut = CATEGORIES_PAR_PROFIL[profilActif] || CATEGORIES
+    const toutesCategories = [...categoriesDefaut, ...(categoriesPerso || []).map(c => c.nom)]
 
     const tachesFiltrees = taches
         .filter(t => {

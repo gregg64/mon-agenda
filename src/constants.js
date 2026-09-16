@@ -7,6 +7,10 @@ export const CATEGORIES = [
     "Santé"
 ]
 
+export const CATEGORIES_PAR_PROFIL = {
+    course: ['Fruits & légumes', 'Viandes', 'Produits laitiers', 'Épicerie', 'Hygiène', 'Boissons']
+}
+
 export const PRIORITES = ["haute","normale","basse"]
 
 export const COULEUR_PRIORITE = {

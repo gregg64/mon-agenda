@@ -6,7 +6,7 @@ import ErrorBoundary from './ErrorBoundary'
 import { supabase } from './supabase'
 import './App.css'
 
-const PROFILS = { fiona: 'Fiona', 'Fiona-Travail': 'F-Travail', greg: 'Greg', maison: 'Maison' }
+const PROFILS = { fiona: 'Fiona', 'Fiona-Travail': 'F-Travail', greg: 'Greg', maison: 'Maison', course: 'Courses' }
 
 function App() {
   const [profilActif, setProfilActif] = useState(() => {
@@ -156,6 +156,7 @@ function App() {
             categoriesPerso={categoriesPerso}
             onAjouterCategorie={ajouterCategorie}
             onSupprimerCategorie={supprimerCategorie}
+            profilActif={profilActif}
           />
           <ErrorBoundary>
             <ListeTaches
@@ -164,6 +165,7 @@ function App() {
               onSupprimer={supprimerTache}
               onModifier={modifierTache}
               categoriesPerso={categoriesPerso}
+              profilActif={profilActif}
             />
           </ErrorBoundary>
         </>

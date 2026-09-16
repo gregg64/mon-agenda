@@ -23,6 +23,12 @@ const PROFILS = [
         couleur: '#52A452',
         emoji: '🏠'
     }
+    {
+        id: 'course',
+        nom: 'Courses',
+        couleur: '#E8A030',
+        emoji: '🛒'
+    }
 ]
 
 function SelectionProfil({ onSelectionner }) {
