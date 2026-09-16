@@ -3,19 +3,31 @@ const PROFILS = [
         id: 'fiona',
         nom: 'Fiona',
         couleur: '#E8507A',
-        emoji: '👧'
+        emoji: '👧🏿'
+    },
+    {
+        id: 'Fiona-Travail',
+        nom: 'F-Travail',
+        couleur: '#48A860',
+        emoji: '💻'
     },
     {
         id: 'greg',
         nom: 'Greg',
         couleur: '#3D52D9',
-        emoji: '👨‍🍳'
+        emoji: '🧑🏿‍🍳'
     },
     {
         id: 'maison',
         nom: 'Maison',
         couleur: '#52A452',
         emoji: '🏠'
+    },
+    {
+        id: 'course',
+        nom: 'Courses',
+        couleur: '#E8A030',
+        emoji: '🛒'
     }
 ]
 
