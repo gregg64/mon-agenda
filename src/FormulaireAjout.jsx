@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { CATEGORIES, PRIORITES, CATEGORIES_PAR_PROFIL } from './constants'
+import { CATEGORIES, PRIORITES } from './constants'
 
-function FormulaireAjout({ onAjouter, categoriesPerso, onAjouterCategorie, onSupprimerCategorie, profilActif }) {
+function FormulaireAjout({ onAjouter, categoriesPerso, onAjouterCategorie, onSupprimerCategorie }) {
     const [champs, setChamps] = useState({
         titre: '',
         categorie: CATEGORIES[0],
@@ -11,9 +11,8 @@ function FormulaireAjout({ onAjouter, categoriesPerso, onAjouterCategorie, onSup
     const [gererCats, setGererCats] = useState(false)
     const [nouvelleCategorie, setNouvelleCategorie] = useState('')
 
-    const categoriesDefaut = CATEGORIES_PAR_PROFIL[profilActif] || CATEGORIES
-    const toutesCategories = [...categoriesDefaut, ...(categoriesPerso || []).map(c => c.nom)]
-    
+    const toutesCategories = [...CATEGORIES, ...(categoriesPerso || []).map(c => c.nom)]
+
     const set = (cle) => (e) =>
         setChamps(prev => ({ ...prev, [cle]: e.target.value }))
 
