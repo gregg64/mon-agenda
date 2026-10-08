@@ -395,6 +395,22 @@ input[type="date"]::-webkit-datetime-edit-text {
 }
 .tache__suppr:hover { background: #FDEAEA; color: #C43033; }
 
+.tache__drag-handle {
+  border: none;
+  background: none;
+  color: #C0BEB8;
+  cursor: grab;
+  font-size: 16px;
+  padding: 4px 2px 4px 0;
+  border-radius: 6px;
+  flex-shrink: 0;
+  line-height: 1;
+  touch-action: none;
+  transition: color .15s;
+}
+.tache__drag-handle:hover { color: #8A8A80; }
+.tache__drag-handle:active { cursor: grabbing; }
+
 .tache__edit-btn {
   border: none;
   background: none;
@@ -697,6 +713,8 @@ html.dark .filtre-barre input[type="date"]::-webkit-calendar-picker-indicator,
 html.dark .formulaire__options input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }
+html.dark .tache__drag-handle { color: #48484A; }
+html.dark .tache__drag-handle:hover { color: #98989D; }
 html.dark .tache__edit-btn { color: #636366; }
 html.dark .tache__edit-btn:hover { background: #1C3A5A; color: #64D2FF; }
 html.dark .tache__edit-titre { background: #3A3A3C; border-color: #48484A; color: #F5F5F7; }

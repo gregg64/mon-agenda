@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import { CATEGORIES, PRIORITES } from './constants'
 
 function Tache({ tache, onToggle, onSupprimer, onModifier, toutesCategories }) {
@@ -8,6 +10,15 @@ function Tache({ tache, onToggle, onSupprimer, onModifier, toutesCategories }) {
         titre, categorie, priorite,
         dateEcheance: dateEcheance || ''
     })
+
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id })
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.4 : 1,
+        position: 'relative',
+        zIndex: isDragging ? 999 : 'auto',
+    }
 
     const estEnRetard = !complete
       && dateEcheance
@@ -35,7 +46,7 @@ function Tache({ tache, onToggle, onSupprimer, onModifier, toutesCategories }) {
 
     if (enEdition) {
         return (
-            <div className={`tache tache--edition tache--${champs.priorite}`}>
+            <div ref={setNodeRef} style={style} className={`tache tache--edition tache--${champs.priorite}`}>
                 <div className="tache__bande" />
                 <div className="tache__edition">
                     <input
@@ -70,7 +81,7 @@ function Tache({ tache, onToggle, onSupprimer, onModifier, toutesCategories }) {
     }
 
     return (
-      <div className={[
+      <div ref={setNodeRef} style={style} className={[
         'tache',
         `tache--${priorite}`,
         complete ? 'tache--complete' : '',
@@ -78,6 +89,14 @@ function Tache({ tache, onToggle, onSupprimer, onModifier, toutesCategories }) {
       ].join(' ')}>
 
         <div className="tache__bande" />
+
+        <button
+          className="tache__drag-handle"
+          {...attributes}
+          {...listeners}
+          aria-label="Déplacer la tâche"
+          tabIndex={-1}
+        >⠿</button>
 
         <input
           type="checkbox"

@@ -30,12 +30,20 @@ function App() {
   useEffect(() => {
     if (!profilActif) return
     const chargerCategories = async () => {
-      const [{ data: perso, error: e1 }, { data: exclus, error: e2 }] = await Promise.all([
-        supabase.from('categories_perso').select('*').eq('profil', profilActif).order('nom'),
-        supabase.from('defaults_exclus').select('*').eq('profil', profilActif)
-      ])
-      if (!e1) setCategoriesPerso(perso || [])
-      if (!e2) setDefaultsExclus(exclus || [])
+      const { data: perso, error: e1 } = await supabase
+        .from('categories_perso')
+        .select('*')
+        .eq('profil', profilActif)
+        .order('nom')
+      if (e1) console.error('Erreur chargement categories_perso:', e1)
+      else setCategoriesPerso(perso || [])
+
+      const { data: exclus, error: e2 } = await supabase
+        .from('defaults_exclus')
+        .select('*')
+        .eq('profil', profilActif)
+      if (e2) console.error('Erreur chargement defaults_exclus (table créée ?):', e2)
+      else setDefaultsExclus(exclus || [])
     }
     chargerCategories()
   }, [profilActif])
@@ -93,7 +101,12 @@ function App() {
   const ajouterCategorie = async (nom) => {
     const nouvelleCategorie = { id: crypto.randomUUID(), nom, profil: profilActif }
     const { error } = await supabase.from('categories_perso').insert(nouvelleCategorie)
-    if (!error) setCategoriesPerso(prev => [...prev, nouvelleCategorie].sort((a, b) => a.nom.localeCompare(b.nom)))
+    if (error) {
+      console.error('Erreur ajout catégorie:', error)
+      alert('Erreur ajout catégorie: ' + error.message)
+    } else {
+      setCategoriesPerso(prev => [...prev, nouvelleCategorie].sort((a, b) => a.nom.localeCompare(b.nom)))
+    }
   }
 
   const exclureDefault = async (nom) => {
@@ -129,6 +142,19 @@ function App() {
   const supprimerTache = async (id) => {
     const { error } = await supabase.from('taches').delete().eq('id', id)
     if (!error) setTaches(prev => prev.filter(t => t.id !== id))
+  }
+
+  const reordonnerTaches = async (tachesReordonnees) => {
+    const ids = tachesReordonnees.map(t => t.id)
+    setTaches(prev => prev.map(t => {
+      const i = ids.indexOf(t.id)
+      return i === -1 ? t : { ...t, ordre: i }
+    }))
+    await Promise.all(
+      tachesReordonnees.map((t, i) =>
+        supabase.from('taches').update({ ordre: i }).eq('id', t.id)
+      )
+    )
   }
 
   const toggleComplete = async (id) => {
@@ -192,6 +218,7 @@ function App() {
               onModifier={modifierTache}
               categoriesPerso={categoriesPerso}
               profilActif={profilActif}
+              onReordonner={reordonnerTaches}
             />
           </ErrorBoundary>
         </>
