@@ -8,7 +8,8 @@ function Tache({ tache, onToggle, onSupprimer, onModifier, toutesCategories }) {
     const [enEdition, setEnEdition] = useState(false)
     const [champs, setChamps] = useState({
         titre, categorie, priorite,
-        dateEcheance: dateEcheance || ''
+        dateEcheance: dateEcheance || '',
+        heureEcheance: tache.heureEcheance || ''
     })
 
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id })
@@ -70,6 +71,12 @@ function Tache({ tache, onToggle, onSupprimer, onModifier, toutesCategories }) {
                             onChange={set('dateEcheance')}
                             style={{ color: '#18180F', WebkitTextFillColor: '#18180F', colorScheme: 'light', textAlignLast: 'center' }}
                         />
+                        <input
+                            type="time"
+                            value={champs.heureEcheance}
+                            onChange={set('heureEcheance')}
+                            style={{ color: '#18180F', WebkitTextFillColor: '#18180F', colorScheme: 'light' }}
+                        />
                     </div>
                     <div className="tache__edit-actions">
                         <button className="btn-sauvegarder" onClick={sauvegarder}>✓ Enregistrer</button>
@@ -125,6 +132,7 @@ function Tache({ tache, onToggle, onSupprimer, onModifier, toutesCategories }) {
                   </svg>
                 )}
                 {formatDate(dateEcheance)}
+                {tache.heureEcheance && ` · ${tache.heureEcheance}`}
               </span>
             )}
           </div>

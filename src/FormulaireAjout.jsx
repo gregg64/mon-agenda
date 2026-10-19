@@ -13,6 +13,7 @@ function FormulaireAjout({ onAjouter, categoriesPerso, onAjouterCategorie, onSup
         categorie: categoriesDefaut[0],
         priorite: 'normale',
         dateEcheance: '',
+        heure: '',
     })
     const [gererCats, setGererCats] = useState(false)
     const [nouvelleCategorie, setNouvelleCategorie] = useState('')
@@ -72,6 +73,13 @@ function FormulaireAjout({ onAjouter, categoriesPerso, onAjouterCategorie, onSup
                     type="date"
                     value={champs.dateEcheance}
                     onChange={set('dateEcheance')}
+                    style={{ color: '#18180F', WebkitTextFillColor: '#18180F', colorScheme: 'light' }}
+                />
+
+                <input
+                    type="time"
+                    value={champs.heureEcheance}
+                    onChange={set('heureEcheance')}
                     style={{ color: '#18180F', WebkitTextFillColor: '#18180F', colorScheme: 'light' }}
                 />
 
