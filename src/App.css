@@ -745,3 +745,19 @@ html.dark .gerer-cats__item { background: #3A3A3C; border-color: #48484A; color:
 html.dark .gerer-cats__label-defaut { color: #636366; border-color: #48484A; }
 html.dark .gerer-cats__suppr { color: #636366; }
 html.dark .gerer-cats__suppr:hover { background: #3A1F20; color: #FF453A; }
+.btn-trier-date {
+  border: 1px solid #E0DED7;
+  background: #F5F4F0;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: .15s;
+  color: #8A8A80;
+}
+.btn-trier-date:hover { background: #EDECE7; }
+.btn-trier-date.actif {
+  background: #EEF0FC;
+  border-color: #3D52D9;
+  color: #3D52D9;
+}

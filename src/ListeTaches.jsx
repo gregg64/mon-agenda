@@ -10,6 +10,7 @@ function ListeTaches({ taches, onToggle, onSupprimer, onModifier, categoriesPers
     const [filtrePriorite, setFiltrePriorite] = useState('Toutes')
     const [masquerCompletes, setMasquerCompletes] = useState(false)
     const [filtreDate, setFiltreDate] = useState('')
+    const [trierParDate, setTrierParDate] = useState(false)
 
     const sensors = useSensors(
         useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -28,19 +29,22 @@ function ListeTaches({ taches, onToggle, onSupprimer, onModifier, categoriesPers
             return true
         })
         .sort((a, b) => {
-            // Complètes toujours en bas
             if (a.complete !== b.complete) return a.complete ? 1 : -1
-            // Ordre manuel si défini
+        
+            // Si le bouton "trier par date" est actif → on ignore l'ordre manuel
+            if (trierParDate) {
+                const aStr = (a.dateEcheance || '9999') + 'T' + (a.heureEcheance || '23:59')
+                const bStr = (b.dateEcheance || '9999') + 'T' + (b.heureEcheance || '23:59')
+                return aStr.localeCompare(bStr)
+            }
+        
+            // Sinon : ordre manuel d'abord, puis date
             if (a.ordre != null && b.ordre != null) return a.ordre - b.ordre
             if (a.ordre != null) return -1
             if (b.ordre != null) return 1
-            // Sinon tri par date
-            const aDate = a.dateEcheance || ''
-            const bDate = b.dateEcheance || ''
-            if (!aDate && bDate) return -1
-            if (aDate && !bDate) return 1
-            if (aDate && bDate) return aDate.localeCompare(bDate)
-            return 0
+            const aStr = (a.dateEcheance || '9999') + 'T' + (a.heureEcheance || '23:59')
+            const bStr = (b.dateEcheance || '9999') + 'T' + (b.heureEcheance || '23:59')
+            return aStr.localeCompare(bStr)
         })
 
     const handleDragEnd = ({ active, over }) => {
@@ -53,6 +57,13 @@ function ListeTaches({ taches, onToggle, onSupprimer, onModifier, categoriesPers
 
     return (
         <section className='liste-section'>
+            <button
+                className={`btn-trier-date${trierParDate ? ' actif' : ''}`}
+                onClick={() => setTrierParDate(v => !v)}
+                title="Trier par date et heure"
+            >
+                📅 Trier par date
+            </button>
             <FiltreBarre
                 categories={['Toutes', ...toutesCategories]}
                 priorites={['Toutes', ...PRIORITES]}
